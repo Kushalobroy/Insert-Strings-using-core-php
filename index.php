@@ -1,18 +1,18 @@
 <?php
-include "config.php";
+require "config.php";
 
-if($_SERVER["REQUEST_METHOD"]==="POST"){
-    $email = $_POST['email'];
-    $pass = $_POST['password'];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $email = $_REQUEST['email'];
+    $pass = $_REQUEST['password'];
     $login = "SELECT * FROM user WHERE email='$email' AND password='$pass'";
     $res = $mysqli->query($login);
-    if(mysqli_num_rows($res)===1){
+    if (mysqli_num_rows($res) === 1) {
         $row = mysqli_fetch_assoc($res);
-        if($row['email']==='$email' && $row['password']==='$pass'){
+        if ($row['email'] === $email && $row['password'] === $pass) {
             echo "Logged in !";
-            header("Location: home.php");
-        }
-        else{
+            $id = $row['id'];
+            header("Location: home.php?id=" . $id);
+        } else {
             header("Location:index.php?error=Incorrect email or Password");
         }
     }
